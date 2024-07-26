@@ -1,0 +1,40 @@
+{
+  "name": "wongames-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Strapi application",
+  "license": "MIT",
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "scripts": {
+    "build": "strapi build",
+    "deploy": "strapi deploy",
+    "develop": "strapi develop",
+    "postinstall": "patch-package",
+    "start": "strapi start",
+    "strapi": "strapi"
+  },
+  "dependencies": {
+    "@strapi/plugin-cloud": "4.25.4",
+    "@strapi/plugin-graphql": "^4.25.4",
+    "@strapi/plugin-i18n": "4.25.4",
+    "@strapi/plugin-users-permissions": "4.25.4",
+    "@strapi/strapi": "4.25.4",
+    "patch-package": "^8.0.0",
+    "pg": "8.8.0",
+    "postinstall-postinstall": "^2.1.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "5.3.4",
+    "styled-components": "5.3.3"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "engines": {
+    "node": ">=18.0.0 <=20.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "e97d2f06-bbdc-4141-a1df-63b6143c62e0"
+  }
+}
