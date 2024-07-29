@@ -9,9 +9,11 @@ export default factories.createCoreController(
   ({ strapi }) => ({
     async populate(ctx) {
       // const data = await strapi.services.game.populate();
-      await strapi.service("api::game.game").populate(ctx.query);
+      // await strapi.service("api::game.game").populate(ctx.query);
+      const data = await strapi.service("api::game.game").populate(ctx.query);
 
-      ctx.send("Finalizando no client");
+      // ctx.send("Finalizando no client");
+      ctx.send(data);
     },
   })
 );

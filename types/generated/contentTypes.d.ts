@@ -874,7 +874,6 @@ export interface ApiGameGame extends Schema.CollectionType {
     name: Attribute.String & Attribute.Required;
     slug: Attribute.UID<'api::game.game', 'name'>;
     short_description: Attribute.Text;
-    description: Attribute.Blocks;
     price: Attribute.Decimal & Attribute.Required & Attribute.DefaultTo<0>;
     release_date: Attribute.Date;
     rating: Attribute.Enumeration<
@@ -887,11 +886,6 @@ export interface ApiGameGame extends Schema.CollectionType {
       'manyToMany',
       'api::category.category'
     >;
-    plataforms: Attribute.Relation<
-      'api::game.game',
-      'manyToMany',
-      'api::plataform.plataform'
-    >;
     developers: Attribute.Relation<
       'api::game.game',
       'manyToMany',
@@ -902,6 +896,19 @@ export interface ApiGameGame extends Schema.CollectionType {
       'manyToOne',
       'api::publisher.publisher'
     >;
+    description: Attribute.RichText &
+      Attribute.CustomField<
+        'plugin::ckeditor.CKEditor',
+        {
+          output: 'HTML';
+          preset: 'rich';
+        }
+      >;
+    platforms: Attribute.Relation<
+      'api::game.game',
+      'manyToMany',
+      'api::platform.platform'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::game.game', 'oneToOne', 'admin::user'> &
@@ -911,34 +918,34 @@ export interface ApiGameGame extends Schema.CollectionType {
   };
 }
 
-export interface ApiPlataformPlataform extends Schema.CollectionType {
-  collectionName: 'plataforms';
+export interface ApiPlatformPlatform extends Schema.CollectionType {
+  collectionName: 'platforms';
   info: {
-    singularName: 'plataform';
-    pluralName: 'plataforms';
-    displayName: 'plataform';
+    singularName: 'platform';
+    pluralName: 'platforms';
+    displayName: 'platform';
   };
   options: {
     draftAndPublish: false;
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
-    slug: Attribute.UID<'api::plataform.plataform', 'name'>;
+    slug: Attribute.UID<'api::platform.platform', 'name'>;
     games: Attribute.Relation<
-      'api::plataform.plataform',
+      'api::platform.platform',
       'manyToMany',
       'api::game.game'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::plataform.plataform',
+      'api::platform.platform',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::plataform.plataform',
+      'api::platform.platform',
       'oneToOne',
       'admin::user'
     > &
@@ -1002,7 +1009,7 @@ declare module '@strapi/types' {
       'api::category.category': ApiCategoryCategory;
       'api::developer.developer': ApiDeveloperDeveloper;
       'api::game.game': ApiGameGame;
-      'api::plataform.plataform': ApiPlataformPlataform;
+      'api::platform.platform': ApiPlatformPlatform;
       'api::publisher.publisher': ApiPublisherPublisher;
     }
   }
