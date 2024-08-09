@@ -6,6 +6,7 @@ import axios, { formToJSON } from "axios";
 import { JSDOM } from "jsdom";
 import { factories } from "@strapi/strapi";
 import slugify from "slugify";
+import qs from "qs";
 
 const gameService = "api::game.game";
 const publisherService = "api::publisher.publisher";
@@ -144,7 +145,7 @@ async function createGames(products) {
           data: {
             name: product.title,
             slug: product.slug,
-            price: product.price.finalMoney.amount,
+            price: product?.price?.finalMoney?.amount || 0,
             release_date: new Date(product.releaseDate),
             categories: await Promise.all(
               product.genres.map(({ name }) => getByName(name, categoryService))
@@ -164,7 +165,9 @@ async function createGames(products) {
                 getByName(name, publisherService)
               )
             ),
-            rating: `BR${product.ratings[0].ageRating}`,
+            rating: product?.ratings[0]?.ageRating
+              ? `BR${product?.ratings[0]?.ageRating}`
+              : "BR0",
             ...(await getGameInfo(product.slug)),
             publishedAt: new Date(),
           },
@@ -193,15 +196,17 @@ async function createGames(products) {
 export default factories.createCoreService("api::game.game", () => ({
   async populate(params) {
     try {
-      const gogApiUrl = `https://catalog.gog.com/v1/catalog?limit=48&order=deshttps://catalog.gog.com/v1/catalog?limit=48&order=desc%3Atrending`;
+      const gogApiUrl = `https://catalog.gog.com/v1/catalog?${qs.stringify(
+        params
+      )}`;
 
       const {
         data: { products },
       } = await axios.get(gogApiUrl);
 
-      await createManyToManyData(products);
+      await createManyToManyData([products[2]]);
 
-      await createGames(products);
+      await createGames([products[2]]);
 
       // await getGameInfo(products[0].slug);
 
