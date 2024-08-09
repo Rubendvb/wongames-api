@@ -204,9 +204,9 @@ export default factories.createCoreService("api::game.game", () => ({
         data: { products },
       } = await axios.get(gogApiUrl);
 
-      await createManyToManyData([products[2]]);
+      await createManyToManyData(products);
 
-      await createGames([products[2]]);
+      await createGames(products);
 
       // await getGameInfo(products[0].slug);
 
